@@ -22,18 +22,11 @@
 
 package leetcode.editor.cn;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class LongestCommonPrefix{
   public static void main(String[] args){
       Solution solution = new LongestCommonPrefix().new Solution();
-      String[] strs = {""};
-      System.out.println(strs[0].isEmpty());
-     /* String[] strs = {""};
-      String s = strs[0];
-      System.out.println(s == "");*/
+      String[] strs = {"flower","flow","flight"};
+      System.out.println(solution.longestCommonPrefix(strs));
 
   }
   //leetcode submit region begin(Prohibit modification and deletion)
