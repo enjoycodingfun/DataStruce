@@ -59,7 +59,7 @@ class Solution {
         if (s.length()%2 != 0){
             return false;
         }
-        Stack<Character> stack = new Stack<>();
+        Stack<Character> stack = new Stack<Character>();
         //按顺序入栈并判断与前一个是否能组成一对,能组成就将两个都出栈
         for (int i = 0; i < s.length() ; i++) {
             /*if (stack.empty()){
