@@ -19,29 +19,40 @@
 
 
 package leetcode.editor.cn;
+
 //Java：二叉树的最大深度
-public class P104二叉树的最大深度{
+public class P104二叉树的最大深度 {
+
     public static void main(String[] args) {
         Solution solution = new P104二叉树的最大深度().new Solution();
         // TO TEST
     }
     //leetcode submit region begin(Prohibit modification and deletion)
 
- public class TreeNode {
-     int val;
-     TreeNode left;
-      TreeNode right;
-     TreeNode(int x) { val = x; }
-  }
-class Solution {
-    public int maxDepth(TreeNode root) {
-        if (root == null){
-            return 0;
+    public class TreeNode {
+
+        int val;
+
+        TreeNode left;
+
+        TreeNode right;
+
+        TreeNode(int x) {
+            val = x;
         }
-        return Math.max(maxDepth(root.left),maxDepth(root.right))+1;
+
     }
 
-}
+    class Solution {
+
+        public int maxDepth(TreeNode root) {
+            if (root == null) {
+                return 0;
+            }
+            return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+        }
+
+    }
 //leetcode submit region end(Prohibit modification and deletion)
 
 }
