@@ -56,21 +56,18 @@ class Solution {
         return newHead;*/
 
         //方法二：迭代法解决问题
-        ListNode pre = head;
-        ListNode cur = pre.next;
-        ListNode temp = cur.next;
-        while (temp != null){
+        ListNode pre = null;
+        ListNode cur = head;
+        while (cur!= null){
             //首先要保存当前节点的下个节点的下个节点
-
+            ListNode temp = cur.next;
             //将当前节点的下一个节点指向当前节点前驱节点
             cur.next = pre;
-            //当前节点前置节点与当前节点断开
-            pre.next = null;
             //指针移动到下一个节点
             pre = cur;
             cur = temp;
         }
-        return cur;
+        return pre;
 
 
         
