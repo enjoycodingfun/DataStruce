@@ -77,6 +77,7 @@ class Solution {
             head = head.next;
             count ++;
         }
+
         return count;
     }
 
