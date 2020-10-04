@@ -45,6 +45,7 @@ public class P226翻转二叉树{
  *     TreeNode right;
  *     TreeNode(int x) { val = x; }
  * }
+ * https://mp.weixin.qq.com/s/izZ5uiWzTagagJec6Y7RvQ
  */
 class Solution {
     public TreeNode invertTree(TreeNode root) {
