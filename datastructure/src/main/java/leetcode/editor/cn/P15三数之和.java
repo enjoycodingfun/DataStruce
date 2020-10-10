@@ -86,6 +86,7 @@ public class P15三数之和 {
                         res.add(list);
                         //continue;注意这里不应该continue，应该继续找把左右指针往中间靠拢，但同时需要去重（不仅是老大需要去重，老二老三遍历过程中也要去重）
                         while (left < right && nums[left+1] == nums[left]){
+                            //注意当跳出这个while循环的时候，当前left指向的元素与下一个确实不相等了，但是与其上一个还是相等的，所以我们需要在跳出循环之后继续left+1
                             left++;
                         }
                         while (left < right && nums[right-1] == nums[right]){
