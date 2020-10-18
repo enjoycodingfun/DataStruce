@@ -33,8 +33,8 @@
 
 package leetcode.editor.cn;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Deque;
+import java.util.LinkedList;
 import leetcode.editor.cn.common.TreeNode;
 
 //Java：对称二叉树
@@ -61,43 +61,48 @@ public class P101对称二叉树 {
             if (root == null) {
                 return true;
             }
-            //中序遍历后判断是否是回文字符串
-            if (root.right == null && root.left == null) {
-                return true;
-            }
-            if (root.left == null || root.right == null) {
-                return false;
-            }
-            //接下来中序遍历后判断是否是回文字符串
-            List<Integer> res = new ArrayList<>();
-            List<Integer> inorder = inorder(res, root);
-            //如果是对称的，一定是奇数个节点
-            if (inorder.size() % 2 == 0) {
-                return false;
-            }
-            int i = inorder.size() / 2 - 1;
-            int j = inorder.size() / 2 + 1;
-            while (i >= 0 && j <= inorder.size() - 1) {
-                if (!inorder.get(i).equals(inorder.get(j))) {
+            //方法一：调用递归函数，比较左右节点
+            //return isMirror(root.left,root.right);
+            //方法二：对列，https://leetcode-cn.com/problems/symmetric-tree/solution/dong-hua-yan-shi-101-dui-cheng-er-cha-shu-by-user7/
+            //创建保存节点的对列
+            Deque<TreeNode> deque = new LinkedList<>();
+            //先将左右节点放进去
+            deque.add(root.left);
+            deque.add(root.right);
+            //以此放进对称节点并比较
+            while (!deque.isEmpty()){
+                TreeNode left = deque.removeFirst();
+                TreeNode right = deque.removeFirst();
+                if (right == null && left == null) {
+                    //注意这里是continue，继续比较
+                    continue;
+                }
+                if (left == null || right == null) {
                     return false;
                 }
-                i--;
-                j++;
+                if (left.val != right.val){
+                    return false;
+                }
+                //之后依次放入对称节点
+                deque.add(left.left);
+                deque.add(right.right);
+                deque.add(left.right);
+                deque.add(right.left);
             }
             return true;
         }
 
-        private List<Integer> inorder(List<Integer> res, TreeNode root) {
-            /**
-             * 中序遍历
-             */
-            if (root == null) {
-                return res;
+        private boolean isMirror(TreeNode left, TreeNode right) {
+            if (right == null && left == null) {
+                return true;
             }
-            inorder(res, root.left);
-            res.add(root.val);
-            inorder(res, root.right);
-            return res;
+            if (left == null || right == null) {
+                return false;
+            }
+            if (left.val != right.val){
+                return false;
+            }
+            return isMirror(left.left, right.right) && isMirror(left.right, right.left);
         }
 
     }
