@@ -22,7 +22,7 @@
 
 package leetcode.editor.cn;
 
-import java.util.HashMap;
+import java.util.Arrays;
 
 //Java：有效的字母异位词
 public class P242有效的字母异位词 {
@@ -50,7 +50,7 @@ public class P242有效的字母异位词 {
              * 方法一，时间复杂度O(N),空间复杂度O(N)
              * hashmap,key是字母，value是字母出现的次数
              */
-            HashMap<Character,Integer> smap = new HashMap<>(s.length()*4/3);
+            /*HashMap<Character,Integer> smap = new HashMap<>(s.length()*4/3);
             HashMap<Character,Integer> tmap = new HashMap<>(t.length()*4/3);
             for (int i = 0; i < s.length(); i++) {
                 if (smap.get(s.charAt(i)) == null){
@@ -71,7 +71,15 @@ public class P242有效的字母异位词 {
                     return false;
                 }
             }
-            return true;
+            return true;*/
+            /**
+             * 方法二：先排序再比较
+             */
+            char[] str1 = s.toCharArray();
+            char[] str2 = t.toCharArray();
+            Arrays.sort(str1);
+            Arrays.sort(str2);
+            return Arrays.equals(str1,str2);
         }
 
     }
