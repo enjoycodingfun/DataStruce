@@ -81,10 +81,15 @@ public class P590N叉树的后序遍历 {
                 return list;
             }
             Stack<Node> stack = new Stack<>();
+            //进队列时根左右，出队列时根右左，按出队列顺序从头结点加入结果集就是左右根后序遍历
+            //入队，根
             stack.push(root);
             while (!stack.empty()){
+
+                //出队根右左，一进来先把根出列
                 Node cur = stack.pop();
                 list.addFirst(cur.val);
+                //入队左右
                 for (int i = 0; i < cur.children.size(); i++) {
                     stack.push(cur.children.get(i));
                 }
