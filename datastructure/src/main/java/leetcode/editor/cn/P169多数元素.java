@@ -20,8 +20,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.HashMap;
-
 //Java：多数元素
 public class P169多数元素 {
 
@@ -38,16 +36,50 @@ public class P169多数元素 {
                 return 0;
             }
             /**
-             * 暴力法
+             * 方法一：暴力法
              */
-            HashMap<Integer,Integer> map = new HashMap<>(nums.length);
+            /*HashMap<Integer,Integer> map = new HashMap<>(nums.length);
             for (int num : nums) {
                 map.put(num,map.getOrDefault(num,0)+1);
                 if (map.get(num)>nums.length/2){
                     return num;
                 }
             }
-            return 0;
+            return 0;*/
+            /**
+             * 方法二，排序法，从小到大排序后位于数组中间的一定是多数元素
+             */
+            /*Arrays.sort(nums);
+            return nums[nums.length/2];*/
+            /**
+             * 方法三：采用优先队列topK
+             */
+            /*int len = (nums.length + 1) >> 1;
+            //优先队列的内部实现是二叉小顶堆
+            PriorityQueue<Integer> pQueue = new PriorityQueue<>(len, Comparator.comparingInt(item -> -item));
+            for (int num : nums) {
+                pQueue.offer(num);
+                if (pQueue.size() > len)
+                    pQueue.poll();
+            }
+            return pQueue.poll();*/
+            /**
+             * 方法四：摩尔投票法
+             * https://leetcode-cn.com/problems/majority-element/solution/3chong-fang-fa-by-gfu-2/
+             */
+            int countNum = nums[0],count = 1;
+            for (int i = 1; i < nums.length; i++) {
+                if (countNum == nums[i]){
+                    count++;
+                }else{
+                    count--;
+                    if (count == 0){
+                        countNum = nums[i];
+                        count = 1;
+                    }
+                }
+            }
+            return countNum;
         }
 
     }
