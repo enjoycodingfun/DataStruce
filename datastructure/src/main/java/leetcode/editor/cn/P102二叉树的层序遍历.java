@@ -27,7 +27,9 @@
 package leetcode.editor.cn;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import leetcode.editor.cn.common.TreeNode;
 
 //Java：二叉树的层序遍历
@@ -54,10 +56,36 @@ class Solution {
          */
         List<List<Integer>> res = new ArrayList<>();
         if (root != null) {
-            dfs(res,root,0);
+            //深度优先遍历
+            //dfs(res,root,0);
+            //广度优先遍历
+            bfs(res,root);
         }
         return res;
     }
+
+    private void bfs(List<List<Integer>> res, TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()){
+            int size = queue.size();
+            List<Integer> list = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (node == null){
+                    continue;
+                }
+                list.add(node.val);
+                queue.offer(node.left);
+                queue.offer(node.right);
+            }
+            if (!list.isEmpty()){
+                res.add(list);
+            }
+        }
+
+    }
+
     private void dfs(List<List<Integer>> res, TreeNode node, int level) {
         if (res.size()-1<level){
             res.add(new ArrayList<>());
