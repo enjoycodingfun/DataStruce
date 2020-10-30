@@ -55,15 +55,37 @@ public class P515在每个树行中找最大值 {
     class Solution {
 
         public List<Integer> largestValues(TreeNode root) {
-            /**
-             * 方法一：bfs
-             */
             List<Integer> res = new ArrayList<>();
             if (root == null){
                 return res;
             }
-            return bfs(root,res);
+            /**
+             * 方法一：bfs
+             */
+            //return bfs(root,res);
+            /**
+             * 方法二：dfs
+             */
+            return dfs(root,res,1);
 
+        }
+
+        private List<Integer> dfs(TreeNode root, List<Integer> res, int level) {
+            if (root == null){
+                return res;
+            }
+            if (level == res.size()+1){
+                //如果走到下一层了直接把当前节点加入到结果集中
+                res.add(root.val);
+            }else {
+                //否则对比当前层level的每个元素和结果集中第level个元素谁大取谁，因为数组下标从0开始，
+                //这里level从1开始，所以level需要减一
+                res.set(level-1,Math.max(res.get(level-1), root.val ));
+            }
+            //下面两行DFS核心代码
+            dfs(root.left,res,level+1);
+            dfs(root.right,res,level+1);
+            return res;
         }
 
         private List<Integer> bfs(TreeNode root, List<Integer> res) {
