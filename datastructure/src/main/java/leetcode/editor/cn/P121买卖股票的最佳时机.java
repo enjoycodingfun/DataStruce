@@ -43,13 +43,26 @@ public class P121买卖股票的最佳时机 {
                 return 0;
             }
             /**
-             * 方法一：暴力求解
+             * 方法一：暴力求解，时间复杂度O（n2）
              */
-            int max = 0;
+            /*int max = 0;
             for (int i = 0; i < prices.length; i++) {
                 for (int j = i+1; j < prices.length; j++) {
                     max = Math.max(max,prices[j]-prices[i]);
                 }
+            }
+            return max;*/
+            /**
+             * 方法二：贪心算法
+             * https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/solution/hen-jing-dian-de-tan-xin-suan-fa-by-pendygg/
+             */
+            int low = Integer.MAX_VALUE;
+            int max = 0;
+            for (int i = 0; i < prices.length; i++) {
+                if (prices[i] < low){
+                    low = prices[i];
+                }
+                max = Math.max(max,prices[i]-low);
             }
             return max;
         }
