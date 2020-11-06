@@ -40,11 +40,12 @@ public class P53最大子序和 {
             dp[0] = nums[0];//以第一个元素结尾的最大子序和自然就是第一个元素自己
             int max = dp[0];//这里最好是int max= dp[0];
             for (int i = 1; i < nums.length; i++) {
-                if (dp[i-1]>=0){
+                /*if (dp[i-1]>=0){
                     dp[i] = dp[i-1]+nums[i];
                 }else {
                     dp[i] = nums[i];
-                }
+                }*/
+                dp[i] = Math.max(dp[i-1]+nums[i],nums[i]);
             }
             //遍历所有dp
             for (int i = 0; i < nums.length; i++) {
