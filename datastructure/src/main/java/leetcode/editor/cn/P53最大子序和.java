@@ -36,20 +36,32 @@ public class P53最大子序和 {
              * https://leetcode-cn.com/problems/maximum-subarray/solution/dong-tai-gui-hua-fen-zhi-fa-python-dai-ma-java-dai/
              */
             //建立dptable dp[i]：表示以 nums[i] 结尾的连续子数组的最大和。
-            int[] dp = new int[nums.length];
+            /*int[] dp = new int[nums.length];
             dp[0] = nums[0];//以第一个元素结尾的最大子序和自然就是第一个元素自己
             int max = dp[0];//这里最好是int max= dp[0];
             for (int i = 1; i < nums.length; i++) {
-                /*if (dp[i-1]>=0){
+                *//*if (dp[i-1]>=0){
                     dp[i] = dp[i-1]+nums[i];
                 }else {
                     dp[i] = nums[i];
-                }*/
+                }*
+                这部分代码可以替换成下面一句
+                 *//*
                 dp[i] = Math.max(dp[i-1]+nums[i],nums[i]);
             }
             //遍历所有dp
             for (int i = 0; i < nums.length; i++) {
                 max = Math.max(max,dp[i]);
+            }
+            return max;
+            */
+            //针对上面的进行空间优化，每个状态的dp只和上一状态相关，因此我们只保存上一状态的最大值
+            // 起名叫 pre 表示的意思是「上一个状态」的值
+            int pre = nums[0];
+            int max = pre;
+            for (int i = 1; i < nums.length; i++) {
+                pre = Math.max(nums[i], pre+nums[i]);
+                max = Math.max(pre, max);
             }
             return max;
         }
