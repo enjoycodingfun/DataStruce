@@ -57,14 +57,53 @@ public class P53最大子序和 {
             */
             //针对上面的进行空间优化，每个状态的dp只和上一状态相关，因此我们只保存上一状态的最大值
             // 起名叫 pre 表示的意思是「上一个状态」的值
-            int pre = nums[0];
+            /*int pre = nums[0];
             int max = pre;
             for (int i = 1; i < nums.length; i++) {
                 pre = Math.max(nums[i], pre+nums[i]);
                 max = Math.max(pre, max);
             }
-            return max;
+            return max;*/
+            /**
+             * 分治法：
+             * 参考题解：https://leetcode-cn.com/problems/maximum-subarray/solution/zheng-li-yi-xia-kan-de-dong-de-da-an-by-lizhiqiang/
+             */
+            return maxSubArrayHelper(nums,0,nums.length-1);
+
         }
+
+        private int maxSubArrayHelper(int[] nums, int start, int end) {
+            //base case
+            if (start == end) {
+                return nums[start];
+            }
+            //计算中间值
+            int mid = start + (end - start) / 2;
+            //计算左侧区间的最大值 [start,mid]
+            int leftMax = maxSubArrayHelper(nums, start, mid);
+            //计算右侧区间的最大值[mid+1,end]
+            int rightMax = maxSubArrayHelper(nums, mid + 1, end);
+            //计算跨左右区间的子序列的最大值
+            //先计算左半部分的最大值，从左半部分最右边元素逐渐往左侧求加和
+            int leftCrossMax = Integer.MIN_VALUE;
+            int leftSum = 0;
+            for (int i = mid; i >=start ; i--) {
+                leftSum += nums[i];
+                leftCrossMax = Math.max(leftCrossMax,leftSum);
+            }
+            //再计算右半部分的最大值，从右半部分最左边元素逐渐往右侧求和
+            int rightCrossMax = Integer.MIN_VALUE;
+            int rightSum = 0;
+            for (int i = mid+1; i <= end; i++) {
+                rightSum += nums[i];
+                rightCrossMax = Math.max(rightCrossMax, rightSum);
+            }
+            //两边最大值加和就是跨区间这种情况的最大值
+            int crossMax = leftCrossMax + rightCrossMax;
+            //三者最大值就是我们要求的最后最大值
+            return Math.max(Math.max(leftMax,rightMax),crossMax);
+        }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
