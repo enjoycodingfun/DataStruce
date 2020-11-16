@@ -46,6 +46,9 @@
 
 package leetcode.editor.cn;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 //Java：岛屿数量
 public class P200岛屿数量 {
 
@@ -57,31 +60,22 @@ public class P200岛屿数量 {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        private final int[][] DIRECTIONS = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
-
-        private boolean[][] visited;
-
-        private int rows;
-
-        private int cols;
-
-        private char[][] grid;
 
         public int numIslands(char[][] grid) {
-            rows = grid.length;
-            if (rows == 0) {
+            /**
+             * 方法一：深度优先搜索
+             * https://leetcode-cn.com/problems/number-of-islands/solution/number-of-islands-shen-du-you-xian-bian-li-dfs-or-/
+             */
+            if (grid == null || grid.length == 0) {
                 return 0;
             }
-            cols = grid[0].length;
-
-            this.grid = grid;
-            visited = new boolean[rows][cols];
             int count = 0;
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < cols; j++) {
-                    // 如果是岛屿中的一个点，并且没有被访问过，就进行深度优先遍历
-                    if (!visited[i][j] && grid[i][j] == '1') {
-                        dfs(i, j);
+            for (int i = 0; i < grid.length; i++) {
+                for (int j = 0; j < grid[0].length; j++) {
+                    if (grid[i][j] == '1'){
+                        //dfs(grid,i,j);
+                        bfs(grid, i, j);
+                        //删除已经遍历的
                         count++;
                     }
                 }
@@ -89,26 +83,33 @@ public class P200岛屿数量 {
             return count;
         }
 
-        /**
-         * 从坐标为 (i, j) 的点开始进行深度优先遍历
-         */
-        private void dfs(int i, int j) {
-            visited[i][j] = true;
-            for (int k = 0; k < 4; k++) {
-                int newX = i + DIRECTIONS[k][0];
-                int newY = j + DIRECTIONS[k][1];
-                // 如果不越界、还是陆地、没有被访问过
-                if (inArea(newX, newY) && grid[newX][newY] == '1' && !visited[newX][newY]) {
-                    dfs(newX, newY);
+        private void bfs(char[][] grid, int i, int j) {
+            Queue<int[]> queue = new LinkedList<>();
+            queue.offer(new int[]{i,j});
+            while (!queue.isEmpty()){
+                int[] cur = queue.poll();
+                int m = cur[0], n = cur[1];
+                if (m>=0&&m<grid.length&&n>=0&&n<grid[0].length&&grid[m][n]=='1'){
+                    grid[m][n] = '0';
+                    bfs(grid,i+1,j);
+                    bfs(grid,i,j+1);
+                    bfs(grid,i-1,j);
+                    bfs(grid,i,j-1);
                 }
             }
         }
 
         /**
-         * 封装成 inArea 方法语义更清晰
+         * 从坐标为 (i, j) 的点开始进行深度优先遍历
          */
-        private boolean inArea(int x, int y) {
-            return x >= 0 && x < rows && y >= 0 && y < cols;
+        private void dfs(char[][] grid, int i, int j) {
+            if(i < 0 || j < 0 || i >= grid.length || j >= grid[0].length || grid[i][j] == '0') return;
+            //将遍历过的删除
+            grid[i][j] = '0';
+            dfs(grid,i+1,j);
+            dfs(grid,i,j+1);
+            dfs(grid,i-1,j);
+            dfs(grid,i,j-1);
         }
 
     }
