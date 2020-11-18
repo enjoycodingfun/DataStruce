@@ -68,6 +68,8 @@ public class P36有效的数独 {
 
     public static void main(String[] args) {
         Solution solution = new P36有效的数独().new Solution();
+        System.out.println(1<<4|0);//16
+        System.out.println(16>>4&1);//1
         // TO TEST
     }
 
@@ -118,14 +120,41 @@ public class P36有效的数独 {
 
         /**
          * 方法二：位运算
+         * 原理，如果当前访问的board[i][j]没有访问过，通过如下运算1<<broad[i][j]|row[i]这样row[i]就保存了broad[i][j]第i位，下次判断的时候，只要
+         * 将row[i]>>broad[i][j]&1，如果得到结果是1，说明这一行已经保存过broad[i][j]，列j及box[i/3*3+j/3]同理
+         * 比如我们初始化时候用row[9]数组保存位运算结果的数字，假如当前访问到broad[2][3] = 4,那们我们要看下4参会与位运算的结果有没有保存在row[2]，
+         * 假如还没有，那么row[2]一定是0，那么row[2]>>4&1=0;假如已经访问过了，那么当时访问的时候执行了1<<broad[i][j]|row[i]=1<<4|0=16并且将16保存在了
+         * row[2]中，此时再执行row[2]>>4&1=1,所以可以通过这种方式来判断某个行有没有当前数字broad[i][j]，某个列同理
          * @param board
          * @return
          */
         private boolean method2(char[][] board) {
-            return false;
+            int[] rows = new int[9];//初始化用来保存某个行有没有某个数字board[i][j]参与运算的结果
+            int[] cols = new int[9];//初始化用来保存某个列有没有某个数字board[i][j]参与运算的结果
+            int[] boxs = new int[9];//初始化用来保存某个格子中有没有某个数字board[i][j]参与运算的结果
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    if (board[i][j] == '.'){
+                        continue;
+                    }
+                    int tmp = board[i][j];
+                    //判定某行或列或box有没有保存该数字结果
+                    int boxIndex = i/3*3+j/3;
+                    if ((rows[i]>>tmp & 1)==1||(cols[j]>>tmp &1)==1||(boxs[boxIndex]>>tmp &1)==1){
+                        //说明已经保存过了
+                        return false;
+                    }
+                    //否则的话保存进去
+                    rows[i] = (1<<tmp)|rows[i];
+                    cols[j] = (1<<tmp)|cols[j];
+                    boxs[boxIndex] = (1<<tmp)|boxs[boxIndex];
+                }
+            }
+            return true;
         }
 
     }
+
 //leetcode submit region end(Prohibit modification and deletion)
 
 }
