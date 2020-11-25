@@ -34,8 +34,18 @@ public class P136只出现一次的数字 {
     class Solution {
 
         public int singleNumber(int[] nums) {
-            return method1(nums);
+            //return method1(nums);
+            return method2(nums);
 
+        }
+        //任何数异或自己等于0，而任何数异或0等于他自己，所以如果一个数出现两次，经过异或会变为0，最后再异或出现一次的那个数字
+        //得到它自己
+        private int method2(int[] nums) {
+            int res = 0;
+            for (int num : nums) {
+                res ^= num;
+            }
+            return res;
         }
 
         private int method1(int[] nums) {
