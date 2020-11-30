@@ -62,73 +62,77 @@
 
 
 package leetcode.editor.cn;
+
 //Java：字符串转换整数 (atoi)
-public class P8字符串转换整数 (atoi){
+public class P8字符串转换整数(atoi) {
+
     public static void main(String[] args) {
-        Solution solution = new P8字符串转换整数 (atoi)().new Solution();
+        Solution solution = new P8字符串转换整数(atoi) ().new Solution();
         // TO TEST
     }
-    //leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int myAtoi(String s) {
-        if (s == null || s.length() == 0){
-            return 0;
-        }
-        return method1(s);
 
-    }
+    //leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+
+        public int myAtoi(String s) {
+            if (s == null || s.length() == 0) {
+                return 0;
+            }
+            return method1(s);
+
+        }
+
+        /**
+         * 参考题解：https://leetcode-cn.com/problems/string-to-integer-atoi/solution/jin-liang-bu-shi-yong-ku-han-shu-nai-xin-diao-shi-/
+         * @param str
+         * @return
+         */
 
         private int method1(String str) {
             int len = str.length();
-            // str.charAt(i) 方法回去检查下标的合法性，一般先转换成字符数组
-            char[] charArray = str.toCharArray();
+            char[] chars = str.toCharArray();
 
-            // 1、去除前导空格
+            //1.跳过前面的空格
             int index = 0;
-            while (index < len && charArray[index] == ' ') {
+            while (index<len&&chars[index]==' '){
                 index++;
             }
-
-            // 2、如果已经遍历完成（针对极端用例 "      "）
-            if (index == len) {
+            //2.如果此时已经遍历完了，说明全是空格，就直接返回0
+            if (index == len){
                 return 0;
             }
-
-            // 3、如果出现符号字符，仅第 1 个有效，并记录正负
+            //3.如果出现符号位，仅第一个有效，并且要记录正负
             int sign = 1;
-            char firstChar = charArray[index];
-            if (firstChar == '+') {
-                index++;
-            } else if (firstChar == '-') {
+            char firstChar = chars[index];
+            if (firstChar == '-'){
                 index++;
                 sign = -1;
+            }else if (firstChar == '+'){
+                index++;
             }
 
-            // 4、将后续出现的数字字符进行转换
-            // 不能使用 long 类型，这是题目说的
+
+            //4.转换后续出现的数字字符，不能使用long类型
             int res = 0;
-            while (index < len) {
-                char currChar = charArray[index];
-                // 4.1 先判断不合法的情况
-                if (currChar > '9' || currChar < '0') {
+            while (index < len){
+                char curChar = chars[index];
+                //按照示例4除符号位如果不是数字开头的直接无法转换返回
+                if (curChar < '0'||curChar > '9'){
                     break;
                 }
-
-                // 题目中说：环境只能存储 32 位大小的有符号整数，因此，需要提前判：断乘以 10 以后是否越界
-                if (res > Integer.MAX_VALUE / 10 || (res == Integer.MAX_VALUE / 10 && (currChar - '0') > Integer.MAX_VALUE % 10)) {
+                //提前预判res加上当前字符串后是否会越过int类型的上线界限
+                if (res > Integer.MAX_VALUE/10 || (res == Integer.MAX_VALUE/10 && curChar - '0' > Integer.MAX_VALUE%10)){
                     return Integer.MAX_VALUE;
                 }
-                if (res < Integer.MIN_VALUE / 10 || (res == Integer.MIN_VALUE / 10 && (currChar - '0') > -(Integer.MIN_VALUE % 10))) {
+                if (res < Integer.MIN_VALUE/10 || (res == Integer.MIN_VALUE/10 && curChar - '0' > -(Integer.MIN_VALUE%10))){
                     return Integer.MIN_VALUE;
                 }
-
-                // 4.2 合法的情况下，才考虑转换，每一步都把符号位乘进去
-                res = res * 10 + sign * (currChar - '0');
+                //没有上述异常的情况就拼接,注意每次拼接都要乘以sign，否则就变成负数加正数或正数加负数了
+                res = res*10 + sign*(curChar-'0');
                 index++;
             }
             return res;
         }
-
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
