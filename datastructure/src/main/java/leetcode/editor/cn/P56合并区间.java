@@ -43,6 +43,12 @@ public class P56合并区间 {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
+        /**
+         * https://leetcode-cn.com/problems/merge-intervals/solution/chi-jing-ran-yi-yan-miao-dong-by-sweetiee/
+         * @param intervals
+         * @return
+         */
+
         public int[][] merge(int[][] intervals) {
             //先按照区间起始值排序
             Arrays.sort(intervals,(v1,v2)->v1[0]-v2[0]);
