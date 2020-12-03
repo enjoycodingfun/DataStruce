@@ -36,8 +36,32 @@ public static void main(String[]args){
 class Solution {
 
     public int findRepeatNumber(int[] nums) {
-        return method1(nums);
-
+        //return method1(nums);
+        return method2(nums);
+    }
+    /**
+     * 原地置换方法：
+     * https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/solution/yuan-di-zhi-huan-shi-jian-kong-jian-100-by-derrick/
+     * https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/solution/mian-shi-ti-03-shu-zu-zhong-zhong-fu-de-shu-zi-yua/
+     * 如果没有重复数字，那么正常排序后，数字i应该在下标为i的位置，所以思路是重头扫描数组，遇到下标为i的数字如果不是i的话，（假设为m),那么我们就拿与下标m的数字交换。在交换过程中，如果有重复的数字发生，那么终止返回ture
+     * @param nums
+     * @return
+     */
+    private int method2(int[] nums) {
+        int i = 0;
+        while (i<nums.length){
+            if (nums[i] == i){
+                i++;
+                continue;
+            }
+            if (nums[i] == nums[nums[i]]){
+                return nums[i];
+            }
+            int tmp = nums[i];
+            nums[i] = nums[tmp];
+            nums[tmp] = tmp;
+        }
+        return -1;
     }
 
     private int method1(int[] nums) {
