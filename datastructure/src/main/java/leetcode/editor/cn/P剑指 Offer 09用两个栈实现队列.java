@@ -31,7 +31,7 @@
 
 package leetcode.editor.cn;
 
-import java.util.LinkedList;
+import java.util.Stack;
 
 //Java：用两个栈实现队列
 public class P剑指 Offer 09用两个栈实现队列{
@@ -42,24 +42,27 @@ public static void main(String[]args){
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class CQueue {
-    LinkedList<Integer> A, B;
+    Stack<Integer> A, B;
     public CQueue() {
-        A = new LinkedList<Integer>();
-        B = new LinkedList<Integer>();
+        A = new Stack<Integer>();
+        B = new Stack<Integer>();
     }
 
     public void appendTail(int value) {
-        A.addLast(value);
+        A.push(value);
     }
 
     public int deleteHead() {
-        if(!B.isEmpty()) return B.removeLast();
-        if(A.isEmpty()) return -1;
-        while(!A.isEmpty())
-            B.addLast(A.removeLast());
-        return B.removeLast();
+        if (B.isEmpty()){
+            if (A.isEmpty()){
+                return -1;
+            }
+            while (!A.isEmpty()){
+                B.push(A.pop());
+            }
+        }
+        return B.pop();
     }
-
 }
 
 /**
