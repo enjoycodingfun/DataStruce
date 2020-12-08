@@ -52,55 +52,38 @@ public class P剑指 Offer 07重建二叉树{
  * }
  */
 class Solution {
-    private Map<Integer, Integer> reverses;
-    private int[] preorder;
-
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
-        int preLen = preorder.length;
-        int inLen = inorder.length;
-
-        // 可以不做判断，因为题目中给出的数据都是有效的
-        if (preLen != inLen) {
-            return null;
-        }
-
-        this.preorder = preorder;
-
-        // 以空间换时间，否则，找根结点在中序遍历中的位置需要遍历
-        reverses = new HashMap<>(inLen);
-        for (int i = 0; i < inLen; i++) {
-            reverses.put(inorder[i], i);
-        }
-
-        return buildTree(0, preLen - 1, 0, inLen - 1);
-
-    }
+    int[] preorder;
+    Map<Integer,Integer> map = new HashMap<>();
     /**
-     * 根据前序遍历数组的 [preL, preR] 和 中序遍历数组的 [inL, inR] 重新组建二叉树
-     *
-     * @param preL 前序遍历数组的区间左端点
-     * @param preR 前序遍历数组的区间右端点
-     * @param inL  中序遍历数组的区间左端点
-     * @param inR  中序遍历数组的区间右端点
-     * @return 构建的新二叉树的根结点
+     * https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/solution/mian-shi-ti-07-zhong-jian-er-cha-shu-di-gui-fa-qin/
+     * 参考题解如上：
+     * 主要含义，首先通过前序遍历第一位确定根节点坐标root对应的值，之后根据中序遍历将子树分为左子树|root|右子树
+     * 之后递归遍历左右子树，假设当前递归的前序遍历根节点坐标为root（第一次为0）,左边界在中序遍历中坐标值为left（第一次为0），右边界为right(第一次为inorder.length-1)
+     * 那么对于左子树，它在前序遍历中根节点节点值为preorder[root+1],左边界在中序遍历中坐标值为left，右边界坐标值为i-1（i是根节点root在中序遍历的坐标值）
+     * 对于右子树，他在前序遍历中根节点的节点值为preorder[root+（i-left）+1]，左边界在中序遍历中坐标值为i+1，右边界坐标值为right
+     * 解释下为什么右子树的根节点是preorder[root+（i-left）+1]，首先对于前序遍历根左右来说，假如根节点坐标值为root,那么左子树的根节点坐标值就是root+1，
+     * 而右子树的根节点坐标值应该是root+左子树的长度+1，在上文中左子树长度应该就是i-left
      */
-    private TreeNode buildTree(int preL, int preR,
-            int inL, int inR) {
-        if (preL > preR || inL > inR) {
-            return null;
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        this.preorder = preorder;
+        for (int i = 0; i < inorder.length; i++) {
+            map.put(inorder[i],i);
         }
-        // 构建的新二叉树的根结点一定是前序遍历数组的第 1 个元素
-        int pivot = preorder[preL];
-        TreeNode root = new TreeNode(pivot);
+        return buildTreeHelp(0,0,inorder.length-1);
 
-        int pivotIndex = reverses.get(pivot);
 
-        // 这一步得画草稿，计算边界的取值，必要时需要解方程，并不难
-        root.left = buildTree(preL + 1, preL + (pivotIndex - inL), inL, pivotIndex - 1);
-        root.right = buildTree(preL + (pivotIndex - inL) + 1, preR, pivotIndex + 1, inR);
-        return root;
     }
 
+    private TreeNode buildTreeHelp(int root, int left, int right){
+        if (left>right){
+            return null;
+        }
+        TreeNode rootNode = new TreeNode(preorder[root]);
+        int rootIndex = map.get(preorder[root]);
+        rootNode.left = buildTreeHelp(root+1,left,rootIndex-1);
+        rootNode.right = buildTreeHelp(root+rootIndex-left+1,rootIndex+1,right);
+        return rootNode;
+    }
 
 }
 //leetcode submit region end(Prohibit modification and deletion)
