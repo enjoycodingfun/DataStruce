@@ -27,6 +27,9 @@
 
 package leetcode.editor.cn;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 //Java：机器人的运动范围
 public class P剑指 Offer 13机器人的运动范围{
 public static void main(String[]args){
@@ -56,11 +59,31 @@ class Solution {
              时间复杂度 O(MN)O(MN) ： 最差情况下，机器人遍历矩阵所有单元格，此时时间复杂度为 O(MN)O(MN) 。
              空间复杂度 O(MN)O(MN) ： 最差情况下，Set visited 内存储矩阵所有单元格的索引，使用 O(MN)O(MN) 的额外空间。
          */
-        this.visted = new boolean[m][n];
+        /*this.visted = new boolean[m][n];
         this.m = m;
         this.n = n;
         this.k = k;
-        return dfs(0,0,0,0);
+        return dfs(0,0,0,0);*/
+        /**
+         * 方法二
+         * https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/solution/mian-shi-ti-13-ji-qi-ren-de-yun-dong-fan-wei-dfs-b/
+         */
+        boolean[][] visited = new boolean[m][n];
+        int res = 0;
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{0,0,0,0});
+        while (!queue.isEmpty()){
+            int[] cur = queue.poll();
+            int i = cur[0],j=cur[1],si=cur[2],sj=cur[3];
+            if (i>=m||j>=n||si+sj>k||visited[i][j]){
+                continue;
+            }
+            visited[i][j] = true;
+            res++;
+            queue.add(new int[]{i+1,j,(i+1)%10==0?si-8:si+1,sj});
+            queue.add(new int[]{i,j+1,si,(j+1)%10==0?sj-8:sj+1});
+        }
+        return res;
 
     }
 
