@@ -27,9 +27,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 //Java：机器人的运动范围
 public class P剑指 Offer 13机器人的运动范围{
 public static void main(String[]args){
@@ -39,22 +36,40 @@ public static void main(String[]args){
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-
+    boolean[][] visted;
+    int m,n,k;
     public int movingCount(int m, int n, int k) {
-        boolean[][] visited = new boolean[m][n];
-        int res = 0;
-        Queue<int[]> queue= new LinkedList<int[]>();
-        queue.add(new int[] { 0, 0, 0, 0 });
-        while(queue.size() > 0) {
-            int[] x = queue.poll();
-            int i = x[0], j = x[1], si = x[2], sj = x[3];
-            if(i >= m || j >= n || k < si + sj || visited[i][j]) continue;
-            visited[i][j] = true;
-            res ++;
-            queue.add(new int[] { i + 1, j, (i + 1) % 10 != 0 ? si + 1 : si - 8, sj });
-            queue.add(new int[] { i, j + 1, si, (j + 1) % 10 != 0 ? sj + 1 : sj - 8 });
+        /**
+         * 方法一：深度优先遍历 DFS
+         * 深度优先搜索： 可以理解为暴力法模拟机器人在矩阵中的所有路径。DFS 通过递归，先朝一个方向搜到底，再回溯至上个节点，沿另一个方向搜索，以此类推。
+         * 剪枝： 在搜索中，遇到数位和超出目标值、此元素已访问，则应立即返回，称之为 可行性剪枝 。
+         * 算法解析：
+         * 递归参数： 当前元素在矩阵中的行列索引 i 和 j ，两者的数位和 si, sj 。
+         * 终止条件： 当 ① 行列索引越界 或 ② 数位和超出目标值 k 或 ③ 当前元素已访问过 时，返回 00 ，代表不计入可达解。
+         * 递推工作：
+         * 标记当前单元格 ：将索引 (i, j) 存入 Set visited 中，代表此单元格已被访问过。
+         * 搜索下一单元格： 计算当前元素的 下、右 两个方向元素的数位和，并开启下层递归 。
+         * 回溯返回值： 返回 1 + 右方搜索的可达解总数 + 下方搜索的可达解总数，代表从本单元格递归搜索的可达解总数。
+             复杂度分析：
+             设矩阵行列数分别为 M, NM,N 。
+
+             时间复杂度 O(MN)O(MN) ： 最差情况下，机器人遍历矩阵所有单元格，此时时间复杂度为 O(MN)O(MN) 。
+             空间复杂度 O(MN)O(MN) ： 最差情况下，Set visited 内存储矩阵所有单元格的索引，使用 O(MN)O(MN) 的额外空间。
+         */
+        this.visted = new boolean[m][n];
+        this.m = m;
+        this.n = n;
+        this.k = k;
+        return dfs(0,0,0,0);
+
+    }
+
+    private int dfs(int i, int j, int si, int sj) {
+        if (i>=m||j>=n||visted[i][j]||si+sj>k){
+            return 0;
         }
-        return res;
+        visted[i][j] = true;
+        return 1+dfs(i+1,j,(i+1)%10==0?si-8:si+1,sj)+dfs(i,j+1,si,(j+1)%10==0?sj-8:sj+1);
     }
 
 }
