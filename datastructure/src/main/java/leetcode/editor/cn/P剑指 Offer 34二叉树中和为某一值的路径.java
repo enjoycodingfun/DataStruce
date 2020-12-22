@@ -61,60 +61,56 @@ public static void main(String[]args){
 class Solution {
 
     public List<List<Integer>> pathSum(TreeNode root, int sum) {
-        if (root == null){
+        if (root == null) {
             return new ArrayList<>();
         }
         List<List<Integer>> res = new ArrayList<>();
         //dfs(root,sum,new ArrayList<>(),res);
-        dfs2(root,sum,new ArrayList<>(),res);
+        dfs2(root, sum, new ArrayList<>(), res);
         return res;
 
     }
 
     /**
      * 回溯算法
-     * @param root
-     * @param sum
-     * @param arr
-     * @param res
      */
     private void dfs2(TreeNode root, int sum, List<Integer> arr, List<List<Integer>> res) {
-        if (root == null){
+        if (root == null) {
             return;
         }
         arr.add(root.val);
-        if (root.left == null && root.right == null){
-            if (sum == root.val){
+        if (root.left == null && root.right == null) {
+            if (sum == root.val) {
                 res.add(new ArrayList<>(arr));
             }
             //回溯
-            arr.remove(arr.size()-1);
+            arr.remove(arr.size() - 1);
             return;
         }
         //否则的话继续下探节点,此时sum的值要减去root值
-        dfs(root.left,sum-root.val,arr,res);
-        dfs(root.right,sum-root.val,arr,res);
+        dfs(root.left, sum - root.val, arr, res);
+        dfs(root.right, sum - root.val, arr, res);
         //回溯
-        arr.remove(arr.size()-1);
+        arr.remove(arr.size() - 1);
     }
 
     private void dfs(TreeNode root, int sum, List<Integer> arr, List<List<Integer>> res) {
-        if (root == null){
+        if (root == null) {
             return;
         }
         //每次传递都要新建一个list防止分支污染
         List<Integer> subList = new ArrayList<>(arr);
         subList.add(root.val);
-        if (root.left == null && root.right == null){
-            if (sum == root.val){
+        if (root.left == null && root.right == null) {
+            if (sum == root.val) {
                 res.add(subList);
             }
             //已经是叶子节点了，直接返回
             return;
         }
         //否则的话继续下探节点,此时sum的值要减去root值
-        dfs(root.left,sum-root.val,subList,res);
-        dfs(root.right,sum-root.val,subList,res);
+        dfs(root.left, sum - root.val, subList, res);
+        dfs(root.right, sum - root.val, subList, res);
     }
 
 }
