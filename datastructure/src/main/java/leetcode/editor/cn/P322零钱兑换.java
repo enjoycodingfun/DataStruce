@@ -66,6 +66,12 @@ public class P322零钱兑换 {
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+        /**
+         * https://leetcode-cn.com/problems/coin-change/solution/dong-tai-gui-hua-shi-yong-wan-quan-bei-bao-wen-ti-/
+         * @param coins
+         * @param amount
+         * @return
+         */
 
         public int coinChange(int[] coins, int amount) {
             // 给 0 占位
@@ -92,5 +98,8 @@ public class P322零钱兑换 {
 
     }
 //leetcode submit region end(Prohibit modification and deletion)
+    /**
+     * 完全背包问题参考题解附录
+     */
 
 }
